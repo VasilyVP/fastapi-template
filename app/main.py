@@ -32,7 +32,9 @@ async def swagger_ui_html() -> HTMLResponse:
 async def http_exception_handler(request: Request, exc: HTTPException):
     response = build_error_response(exc.status_code, str(exc.detail), request.url.path)
     headers = exc.headers or None
-    return JSONResponse(status_code=exc.status_code, content=response.model_dump(), headers=headers)
+    return JSONResponse(
+        status_code=exc.status_code, content=response.model_dump(), headers=headers
+    )
 
 
 @app.exception_handler(Exception)

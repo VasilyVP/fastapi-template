@@ -43,12 +43,14 @@ The app validates settings on startup. These values are required:
 - `SECRET_KEY`
 - `ALGORITHM`
 - `ACCESS_TOKEN_EXPIRE_MINUTES`
+- `DATABASE_URL`
 
 Optional settings:
 
 - `APP_NAME` defaults to `FastAPI Template`
 - `ADMIN_EMAIL`
 - `ITEMS_PER_USER` defaults to `50`
+- `REFRESH_TOKEN_EXPIRE_DAYS` defaults to `30`
 
 Example `.env`:
 
@@ -56,6 +58,8 @@ Example `.env`:
 SECRET_KEY=change-me
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
+REFRESH_TOKEN_EXPIRE_DAYS=30
+DATABASE_URL=sqlite:///./app.db
 APP_NAME=FastAPI Template
 ADMIN_EMAIL=admin@example.com
 ITEMS_PER_USER=50
@@ -66,31 +70,6 @@ ITEMS_PER_USER=50
 - Swagger UI: `http://127.0.0.1:8000/docs`
 - OpenAPI: `http://127.0.0.1:8000/v1/openapi.json`
 
-## Route Overview
-
-### System
-
-- `GET /v1/` returns a simple health-style response
-- `GET /v1/info` returns selected runtime settings
-- `GET /v1/models/{model_name}` demonstrates enum path parameters
-- `GET /v1/exception` exercises the custom exception handlers
-
-### Items
-
-- `GET /v1/items/{item_id}` reads an item with query parameters
-- `POST /v1/items/{item_id}` replaces item data
-- `PATCH /v1/items/{item_id}` partially updates item data
-
-### Users
-
-- `GET /v1/users/` demonstrates shared query parameter models
-- `GET /v1/users/me` returns the authenticated user
-- `GET /v1/authorized` returns the authenticated active user
-
-### Auth
-
-- `POST /v1/token` exchanges username and password for a bearer token
-
 ## Demo Users
 
 - `johndoe` / `secret`
@@ -100,7 +79,7 @@ ITEMS_PER_USER=50
 
 ## Auth Flow
 
-Request a token:
+Request login tokens:
 
 ```bash
 curl -X POST "http://127.0.0.1:8000/v1/token" ^
@@ -108,14 +87,25 @@ curl -X POST "http://127.0.0.1:8000/v1/token" ^
     -d "username=johndoe&password=secret"
 ```
 
-Use the returned token:
+The response includes `access_token` and `refresh_token`.
+
+Use the access token:
 
 ```bash
 curl "http://127.0.0.1:8000/v1/users/me" ^
     -H "Authorization: Bearer <access_token>"
 ```
 
-Protected endpoints return `401` for missing, malformed, invalid, or expired tokens. Disabled users are rejected before access is granted.
+Refresh an access token with the refresh token:
+
+```bash
+curl -X POST "http://127.0.0.1:8000/v1/refresh" ^
+    -H "Authorization: Bearer <refresh_token>"
+```
+
+The refresh endpoint returns a new `access_token` only.
+
+Protected endpoints return `401` for missing, malformed, invalid, or expired tokens. Refresh tokens are stateless and valid until expiry, but refresh requests are rejected if the resolved user is disabled.
 
 ## Error Response Shape
 

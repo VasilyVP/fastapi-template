@@ -35,7 +35,7 @@ async def get_model(model_name: ModelName):
     return {"model_name": model_name, "message": "Have some residuals"}
 
 
-@router.get("/exception", tags=["exception"])
+@router.get("/exception") # , tags=["exception"]
 async def raise_exception():
     if random() < 0.5:
         raise HTTPException(status_code=400, detail="This is a test HTTP exception")

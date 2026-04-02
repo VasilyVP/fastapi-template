@@ -1,21 +1,18 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
-class User(BaseModel):
+class UserRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     username: str
     email: str | None = None
     full_name: str | None = None
-    disabled: bool | None = None
 
 
-class UserInDB(User):
-    hashed_password: str
-
-
-class Token(BaseModel):
+class AccessToken(BaseModel):
     access_token: str
-    token_type: str
+    token_type: str = "bearer"
 
 
-class TokenData(BaseModel):
-    username: str | None = None
+class TokenPair(AccessToken):
+    refresh_token: str

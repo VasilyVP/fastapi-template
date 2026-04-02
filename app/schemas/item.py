@@ -1,20 +1,28 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
-class Item(BaseModel):
+class ItemCreateRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     name: str = Field(max_length=50)
     price: float = Field(gt=0, description="Price must be greater than zero")
-    is_offer: bool | None = None
-    email: EmailStr
 
 
-class ItemIdParams(BaseModel):
-    item_id: int = Field(..., description="The ID of the item to retrieve")
-    param1: str | None = Field(
-        None,
-        min_length=3,
-        max_length=50,
-        description="A query parameter with a minimum length of 3 and a maximum length of 50",
+class ItemPatchRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str | None = Field(default=None, max_length=50)
+    price: float | None = Field(
+        default=None,
+        gt=0,
+        description="Price must be greater than zero",
     )
-    param2: str | None = None
-    param3: int = Field(..., description="A required integer query parameter")
+
+
+class ItemRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    name: str
+    price: float
+    owner_username: str

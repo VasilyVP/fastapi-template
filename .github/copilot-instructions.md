@@ -4,6 +4,7 @@
 - Use `make` as the primary command interface.
 - Install dependencies with `make install`.
 - Start the development server with `make dev`.
+- There is currently no dedicated test target in `Makefile`; do not assume `make test` exists.
 - This project targets Python 3.14+ and uses `uv` for environment and dependency management.
 - `pyrightconfig.json` uses strict type checking. Keep new code fully typed and compatible with strict Pyright.
 - On Windows, do not switch `make dev` to `uv run fastapi ...`. In this repo the reliable CLI form is `uv run python -m fastapi dev ./app/main.py`.
