@@ -1,3 +1,5 @@
+PORT ?= 8080
+
 # Install project dependencies
 install:
 	@uv sync
@@ -12,4 +14,4 @@ dev:
 	@uv run python -m fastapi dev ./app/main.py
 
 prod:
-	@uv run granian --interface asgi app.main:app --host 0.0.0.0 --port ${PORT:-8080} --workers 1
+	@python -m granian --interface asgi --host 0.0.0.0 --port $(PORT) --workers 1 app.main:app
