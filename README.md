@@ -34,7 +34,15 @@ make dev
 
 The API will be available at `http://127.0.0.1:8000`.
 
-The `Makefile` is the preferred interface for project commands. `make install` installs dependencies, and `make dev` wraps the underlying FastAPI command for this repo.
+The `Makefile` is the preferred interface for project commands. `make install` installs dependencies, `make test` runs the test suite, and `make dev` wraps the underlying FastAPI command for this repo.
+
+## Run Tests
+
+Run the full test suite with:
+
+```bash
+make test
+```
 
 ## Environment Variables
 

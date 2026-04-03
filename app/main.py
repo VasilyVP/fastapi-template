@@ -24,7 +24,7 @@ app.include_router(api_router, prefix=API_V1_PREFIX)
 async def swagger_ui_html() -> HTMLResponse:
     return versioned_swagger_ui_html(
         doc_versions=[{"url": f"{API_V1_PREFIX}/openapi.json", "name": "v1"}],
-        title=f"{app.title} – API Docs",
+        title=f"{app.title} - API Docs",
     )
 
 

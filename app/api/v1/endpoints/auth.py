@@ -9,7 +9,7 @@ from app.schemas.user import AccessToken, TokenPair
 from app.services.auth_service import auth_service
 
 
-router = APIRouter(prefix="", tags=["auth"])
+router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/token", response_model=TokenPair)

@@ -25,7 +25,7 @@ class ItemRepository:
                 )
             )
 
-        statement = statement.order_by(UserItem.id).offset(skip).limit(limit)
+        statement = statement.order_by(col(UserItem.id)).offset(skip).limit(limit)
         return list(session.exec(statement).all())
 
     async def get_item(

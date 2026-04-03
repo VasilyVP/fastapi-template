@@ -1,12 +1,15 @@
 # Project Guidelines
 
+## Code Style
+- This project uses Python 3.14+ and strict static typing. Keep new code fully typed and compatible with `pyrightconfig.json` strict settings.
+- Preserve existing async signatures in repositories and route handlers where async is already used, even with in-memory data.
+
 ## Build and Test
 - Use `make` as the primary command interface.
 - Install dependencies with `make install`.
+- Run tests with `make test`.
 - Start the development server with `make dev`.
-- There is currently no dedicated test target in `Makefile`; do not assume `make test` exists.
-- This project targets Python 3.14+ and uses `uv` for environment and dependency management.
-- `pyrightconfig.json` uses strict type checking. Keep new code fully typed and compatible with strict Pyright.
+- This project uses `uv` for environment and dependency management.
 - On Windows, do not switch `make dev` to `uv run fastapi ...`. In this repo the reliable CLI form is `uv run python -m fastapi dev ./app/main.py`.
 
 ## Architecture
@@ -21,8 +24,4 @@
 - Follow the existing singleton pattern for shared repositories and services when extending the current in-memory template structure.
 - Keep schemas split by domain under `app/schemas/`, and use separate models when persisted data differs from public API data.
 - Configuration is loaded through `app/core/config.py` with `BaseSettings` and a cached `get_settings()` helper. Validate required settings through that path rather than reading environment variables directly in endpoints or services.
-- Preserve async signatures for repositories and request handlers where the existing code is async, even if the current mock backend is in-memory.
-
-## Key References
-- See `README.md` for setup, route overview, demo credentials, and environment variables.
-- Use `app/main.py`, `app/api/dependencies.py`, `app/core/config.py`, `app/services/auth_service.py`, and `app/schemas/error.py` as the primary examples for new code.
+- Use `README.md` as the source of truth for setup, auth flow, and environment variable details.
